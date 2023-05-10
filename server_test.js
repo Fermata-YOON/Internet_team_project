@@ -39,6 +39,7 @@ async function main() {
         .then(() => console.log("성공"))
         .catch((err) => console.log("실패"))
 
-    console.log(Article.find({}))
+    const articles = await Article.find()
+    console.log(articles)
 }
 

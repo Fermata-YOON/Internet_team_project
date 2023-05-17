@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <title>명지 택시 카풀</title>
+
+    <style>
+        * {
+            font-family: 'Gowun Batang', serif;
+            color: white;
+        }
+
+        body {
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://mblogthumb-phinf.pstatic.net/MjAxOTAxMDFfMTM0/MDAxNTQ2MzUwMTM3NjMz.o5GTHbDCbx3lJOunlOKdR9jplrtCrCNLIuJ_hgLF-oYg.ej3D9UKFchSSliE2ic_YlmuCvjhsWC__x8jAj39RFAUg.JPEG.dattani/%EB%AA%85%EC%A7%80%EB%8C%80_%EC%9A%A9%EC%9D%B8_%EC%A0%9C2%EC%98%88%EC%B2%B4%EB%8A%A5%EA%B4%80_5339.jpg?type=w2');
+            background-position: center;
+            background-size: cover;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+
+        .order {
+            width: 500px;
+            margin: 60px auto 0px auto;
+            padding-bottom: 60px;
+        }
+
+        .mybtn {
+            width: 100%;
+        }
+
+        .order > table {
+            margin: 40px 0;
+            font-size: 18px;
+        }
+
+        option {
+            color: black;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            //get_list();
+        });
+
+        function get_list() {
+            $.ajax({
+                type: "GET",
+                url: "/list",
+                data: {},
+                success: function (response) {
+                    const articles = response
+
+                    console.log(articles)
+                }
+            });
+        }
+
+        function save_article() {
+
+            const hour = $('#hour').val()
+            const minute = $('#minute').val()
+            const from = $('#from').val()
+            const to = $('#to').val()
+            const people = $('#people').val()
+            const url = $('#url').val()
+            const password = $('#password').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/article",
+                data: {
+                    "hour": hour, "minute": minute, "from": from, "to": to,
+                    "people": people, "url": url, "password": password
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="mask"></div>
+<div class="order">
+    <h1>명지대 택시 합승 구하기!</h1>
+    <h3>여럿이 타서 싸게 학교 가자</h3>
+    <p>
+        합승 후 정산은 확실하게 해주세요!<br/>
+        무임승자할 경우 법적 책임은 본인에게 있습니다.
+    </p>
+    <div class="order-info">
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="hour">출발 시간</label>
+            <select class="form-select" id="hour">
+                <option selected>-- 시간 선택 --</option>
+                <option value=7>오전 7시</option>
+                <option value=8>오전 8시</option>
+                <option value=9>오전 9시</option>
+                <option value=10>오전 10시</option>
+                <option value=11>오전 11시</option>
+                <option value=12>오후 12시</option>
+                <option value=13>오후 1시</option>
+                <option value=14>오후 2시</option>
+                <option value=15>오후 3시</option>
+                <option value=16>오후 4시</option>
+                <option value=17>오후 5시</option>
+                <option value=18>오후 6시</option>
+                <option value=19>오후 7시</option>
+                <option value=20>오후 8시</option>
+                <option value=21>오후 9시</option>
+                <option value=22>오후 10시</option>
+
+            </select>
+            <label class="input-group-text" for="minute">분</label>
+            <select class="form-select" id="minute">
+                <option selected>-- 분 선택 --</option>
+                <option value=0>00분</option>
+                <option value=5>05분</option>
+                <option value=10>10분</option>
+                <option value=15>15분</option>
+                <option value=20>20분</option>
+                <option value=25>25분</option>
+                <option value=30>30분</option>
+                <option value=35>35분</option>
+                <option value=40>40분</option>
+                <option value=45>45분</option>
+                <option value=50>50분</option>
+                <option value=55>55분</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="from">출발지</label>
+            <select class="form-select" id="from">
+                <option selected>-- 출발지를 선택해주세요 ---</option>
+                <option value="기흥역 5번 출구">기흥역 5번 출구</option>
+                <option value="명지대역">명지대역</option>
+                <option value="명지대 로터리">명지대 로터리</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="to">목적지</label>
+            <select class="form-select" id="to">
+                <option selected>-- 목적지를 선태해주세요 ---</option>
+                <option value="명지대 학생회관 앞">명지대 학생회관 앞</option>
+                <option value="명지대 3공학관">명지대 3공학관</option>
+                <option value="기흥역">기흥역</option>
+                <option value="명지대역">명지대역</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="people">탑승 인원</label>
+            <select class="form-select" id="people">
+                <option selected>-- 본인 포함 최대 탑승 인원 --</option>
+                <option value=2>2명</option>
+                <option value=3>3명</option>
+                <option value=4>4명</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">오픈채팅 링크</span>
+            <input id="url" type="text" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">비밀번호</span>
+            <input id="password" type="text" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <button onclick="save_article()" type="button" class="btn btn-warning mybtn">합승 구하기</button>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">출발지</th>
+            <th scope="col">목적지</th>
+            <th scope="col">출발 시간</th>
+            <th scope="col">현재 인원</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody id="article-list">
+        <tr>
+            <td>기흥역 5출</td>
+            <td>명지대 3공</td>
+            <td>0810</td>
+            <td>1/4</td>
+            <td>
+                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승하기</button>
+            </td>
+        </tr>
+        <tr>
+            <td>명지대역</td>
+            <td>명지대 학관</td>
+            <td>0820</td>
+            <td>1/4</td>
+            <td>
+                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승하기</button>
+            </td>
+        </tr>
+        <tr>
+            <td>기흥역 5출</td>
+            <td>명지대 학관</td>
+            <td>0820</td>
+            <td>3/4</td>
+            <td>
+                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승하기</button>
+            </td>
+        </tr>
+        <tr>
+            <td>기흥역 5출</td>
+            <td>명지대 학관</td>
+            <td>0830</td>
+            <td>4/4</td>
+            <td>
+                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승마감</button>
+            </td>
+        </tr>
+        <tr>
+            <td>기흥역 5출</td>
+            <td>명지대 3공</td>
+            <td>0850</td>
+            <td>1/4</td>
+            <td>
+                <button onclick="send_agree()" type="button" class="btn btn-warning mybtn">합승하기</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

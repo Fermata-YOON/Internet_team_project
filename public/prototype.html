@@ -70,6 +70,8 @@
 
         function save_article() {
 
+            checkData();
+
             const hour = $('#hour').val()
             const minute = $('#minute').val()
             const from = $('#from').val()
@@ -91,7 +93,102 @@
                     window.location.reload()
                 }
             });
+
+            
         }
+
+        //<
+        function checkData() {
+                const hour = $('#hour').val();
+                const minute = $('#minute').val();
+                const from = $('#from').val();
+                const to = $('#to').val();
+                const people = $('#people').val();
+                const url = $('#url').val();
+                const password = $('#password').val();
+                
+                // 데이터 형식을 검사하고 오류가 있는 경우 알림창을 띄웁니다.
+                if (!isValidHour(hour)) {
+                    alert('잘못된 시간 형식입니다.');
+                    return;
+                }
+                
+                if (!isValidMinute(minute)) {
+                    alert('잘못된 분 형식입니다.');
+                    return;
+                }
+                
+                if (!isValidFromTo(from, to)) {
+                    alert('출발지와 도착지를 올바르게 입력해주세요.');
+                    return;
+                }
+                
+                if (!isValidPeople(people)) {
+                    alert('잘못된 인원 수입니다.');
+                    return;
+                }
+
+                
+                // 오픈채팅 링크는 아직 비교할 데이터가 없어서 잘못된 알림 코드를 주석처리했습니다.
+                // if (!isValidUrl(url)) {
+                //     alert('잘못된 URL 형식입니다.');
+                //     return;
+                // }
+
+
+                //비밀번호는 아직 비교할 데이터가 없어서 잘못된 알림 코드를 주석처리했습니다.
+                // if (!isValiPassword(password)) {
+                //     alert('잘못된 비밀번호 입니다.');
+                //     return;
+                // }
+            
+            
+        }
+
+
+        // 시간 형식을 검사하는 함수
+        function isValidHour(hour) {
+            // 시간이 0부터 23 사이의 값을 가져야 합니다.
+
+            return hour >= 0 && hour <= 23;
+        }
+
+        // 분 형식을 검사하는 함수
+        function isValidMinute(minute) {
+            // 분이 0부터 59 사이의 값을 가져야 합니다.
+            return minute >= 0 && minute <= 59;
+        }
+
+        // 출발지와 도착지 형식을 검사하는 함수
+        function isValidFromTo(from, to) {
+            // 출발지와 도착지가 모두 입력되어야 합니다.
+
+            return from != '-- 출발지를 선택해주세요 --' && to != '-- 목적지를 선택해주세요 --';
+        }
+
+        // 인원 수 형식을 검사하는 함수
+        function isValidPeople(people) {
+            // 인원 수는 양수이어야 합니다.
+            return people > 0;
+        }
+
+        // URL 형식을 검사하는 함수
+        function isValidUrl(url) {
+            // 정규식을 사용하여 URL 형식을 검사할 수 있습니다.
+            // 이 예제에서는 간단한 형식을 가정하고 검사합니다.
+            const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
+
+            
+
+            return urlPattern.test(url);
+        }
+
+        //password 형식을 검사하는 함수
+        function isValiPassword(password) {
+            return ;
+        }
+        //>
+
     </script>
 </head>
 <body>
@@ -146,7 +243,7 @@
         <div class="input-group mb-3">
             <label class="input-group-text" for="from">출발지</label>
             <select class="form-select" id="from">
-                <option selected>-- 출발지를 선택해주세요 ---</option>
+                <option selected>-- 출발지를 선택해주세요 --</option>
                 <option value="기흥역 5번 출구">기흥역 5번 출구</option>
                 <option value="명지대역">명지대역</option>
                 <option value="명지대 로터리">명지대 로터리</option>
@@ -155,7 +252,7 @@
         <div class="input-group mb-3">
             <label class="input-group-text" for="to">목적지</label>
             <select class="form-select" id="to">
-                <option selected>-- 목적지를 선태해주세요 ---</option>
+                <option selected>-- 목적지를 선택해주세요 --</option>
                 <option value="명지대 학생회관 앞">명지대 학생회관 앞</option>
                 <option value="명지대 3공학관">명지대 3공학관</option>
                 <option value="기흥역">기흥역</option>

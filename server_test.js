@@ -18,6 +18,7 @@ const mySchema = new mongoose.Schema({
     arrival: String, //출발지
     departure: String, //목적지
     password: String, //글 비밀번호
+    student_id: Number //본인 학번
 })
 
 const Article = mongoose.model('Article', mySchema)
@@ -39,6 +40,7 @@ function postArticle(data) {
     article.arrival = data.from
     article.departure = data.to
     article.password = data.password
+    article.student_id = data.student_id
 
     return article
 }
@@ -50,7 +52,7 @@ function getList() {
 }
 
 async function main() {
-    const db = await mongoose.connect("mongodb+srv://hyunsub:60171914@cluster0.8a0ppgx.mongodb.net/", {
+    const db = await mongoose.connect("mongodb+srv://ohyuntaek:60181907@cluster0.8a0ppgx.mongodb.net/", {
         dbName: 'test'
     })
         .then(() => console.log('connected'))

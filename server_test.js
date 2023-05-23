@@ -11,7 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 const mySchema = new mongoose.Schema({
-    time: String, //글 작성 시간
+    ride_month: String, //출발 월
+    ride_day: String, //출발 일
+    ride_hour: String, //출발 시
+    ride_minute: String, //출발 분
     count: Number, //현재인원
     maxCount: Number, //최대탑승인원
     link: String, //채팅링크
@@ -33,7 +36,10 @@ function postArticle(data) {
 
     const article = new Article
 
-    article.time = data.hour + '시' + data.minute + '분'
+    article.ride_month = data.ride_month + '월'
+    article.ride_day = data.ride_day + '일'
+    article.ride_hour = data.ride_hour + '시'
+    article.ride_minute = data.ride_minute + '분'
     article.count = 1
     article.maxCount = data.people
     article.link = data.talk
@@ -60,7 +66,7 @@ async function getList() {
 }
 
 async function main() {
-    const db = await mongoose.connect("mongodb+srv://hyunsub:60171914@cluster0.8a0ppgx.mongodb.net/", {
+    const db = await mongoose.connect("mongodb+srv://ohyuntaek:60181907@cluster0.8a0ppgx.mongodb.net/", {
         dbName: 'test'
     })
         .then(() => console.log('connected'))

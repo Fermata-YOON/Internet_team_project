@@ -49,9 +49,22 @@
         option {
             color: black;
         }
+        .small-select {
+            width: 35px;
+            height: 30px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8em;
+        }
+        .middle-select {
+            width: 80px;
+            height: 30px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8em;
+        }
     </style>
     <script>
         $(document).ready(function () {
+            $("#find_from, #find_to, #find_month, #find_day, #find_hour, #find_minute").change(get_list);
             get_list();
         });
 
@@ -61,49 +74,66 @@
                 url: "/list",
                 data: {},
                 success: function (response) {
-                    const articles = response
+                    const articles = response;
+                    const findFrom = $("#find_from").val();
+                    const findTo = $("#find_to").val();
+                    const findMonth = $("#find_month").val();
+                    const findDay = $("#find_day").val();
+                    const findHour = $("#find_hour").val();
+                    const findMinute = $("#find_minute").val();
 
-                    console.log(articles)
+                    $('#article-list').empty();
 
                     for (let i = 0; i < articles.length; i++) {
-                        let article = articles[i]
+                        let article = articles[i];
+                        const from = article["arrival"];
+                        const to = article["departure"];
+                        const rideMonth = article['ride_month'];
+                        const rideDay = article['ride_day'];
+                        const rideHour = article['ride_hour'];
+                        const rideMinute = article['ride_minute'];
+                        const people = article["maxCount"];
+                        const count = article["count"];
+                        const id = article["_id"];
 
-                        console.log(article)
+                        const matchFrom = (findFrom === "" || findFrom === from);
+                        const matchTo = (findTo === "" || findTo === to);
+                        const matchMonth = (findMonth === "" || findMonth === rideMonth);
+                        const matchDay = (findDay === "" || findDay === rideDay);
+                        const matchHour = (findHour === "" || findHour === rideHour);
+                        const matchMinute = (findMinute === "" || findMinute === rideMinute);
 
-                        const id = article["_id"]
-                        const time = article['time']
-                        const from = article["arrival"]
-                        const to = article["departure"]
-                        const people = article["maxCount"]
-                        const count = article["count"]
-                        const url = article["link"]
-                        const password = article["password"]
+                        if (matchFrom && matchTo && matchMonth && matchDay && matchHour && matchMinute) {
+                        let temp_html = `
+                            <tr>
+                            <td colspan="2">${from}</td>
+                            <td colspan="2">${to}</td>
+                            <td colspan="1">${rideMonth}</td>
+                            <td colspan="1">${rideDay}</td>
+                            <td colspan="1">${rideHour}</td>
+                            <td colspan="1">${rideMinute}</td>
+                            <td colspan="2">${count}/${people}</td>
+                            <td colspan="2">
+                                <button onClick="show_link('${id}', '${count}', '${people}')" type="button" class="btn btn-warning mybtn">신청</button>
+                            </td>
+                            <td colspan="2">
+                                <button onClick="delete_order('${id}')" type="button" class="btn btn-warning mybtn">삭제</button>
+                            </td>
+                            </tr>`;
 
-                        console.log(time, from, to, people, count)
-
-                        let temp_html = ``
-
-                        temp_html = `<tr><td>${from}</td>
-                                     <td>${to}</td>
-                                     <td>${time}</td>
-                                     <td>${count}/${people}</td>
-                                     <td>
-                                        <button onClick="show_link('${id}', '${count}', '${people}')" type="button" class="btn btn-warning mybtn">신청</button>
-                                     </td>
-                                     <td>
-                                        <button onClick="delete_order('${id}')" type="button" class="btn btn-warning mybtn">삭제</button>
-                                     </td></tr>`
-
-                        $('#article-list').append(temp_html)
+                        $('#article-list').append(temp_html);
+                        }
                     }
                 }
             });
         }
 
         function save_article() {
-
-            const hour = $('#hour').val()
-            const minute = $('#minute').val()
+            
+            const ride_month = $('#month').val()
+            const ride_day = $('#day').val()
+            const ride_hour = $('#hour').val()
+            const ride_minute = $('#minute').val()
             const from = $('#from').val()
             const to = $('#to').val()
             const people = $('#people').val()
@@ -115,7 +145,7 @@
                 type: "POST",
                 url: "/article",
                 data: {
-                    "hour": hour, "minute": minute, "from": from, "to": to,
+                    "ride_month": ride_month, "ride_day": ride_day, "ride_hour": ride_hour, "ride_minute": ride_minute, "from": from, "to": to,
                     "people": people, "talk": talk, "password": password, "studentNum": studentNum
                 },
                 dataType: "JSON",
@@ -174,6 +204,59 @@
         무임승자할 경우 법적 책임은 본인에게 있습니다.
     </p>
     <div class="order-info">
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="month">월</label>
+            <select class="form-select" id="month">
+                <option selected>-- 월 선택 --</option>
+                <option value=1>1월</option>
+                <option value=2>2월</option>
+                <option value=3>3월</option>
+                <option value=4>4월</option>
+                <option value=5>5월</option>
+                <option value=6>6월</option>
+                <option value=7>7월</option>
+                <option value=8>8월</option>
+                <option value=9>9월</option>
+                <option value=10>10월</option>
+                <option value=11>11월</option>
+                <option value=12>12월</option>
+            </select>
+            <label class="input-group-text" for="day">일</label>
+            <select class="form-select" id="day">
+                <option selected>-- 일 선택 --</option>
+                <option value=1>1일</option>
+                <option value=2>2일</option>
+                <option value=3>3일</option>
+                <option value=4>4일</option>
+                <option value=5>5일</option>
+                <option value=6>6일</option>
+                <option value=7>7일</option>
+                <option value=8>8일</option>
+                <option value=9>9일</option>
+                <option value=10>10일</option>
+                <option value=11>11일</option>
+                <option value=12>12일</option>
+                <option value=13>13일</option>
+                <option value=14>14일</option>
+                <option value=15>15일</option>
+                <option value=16>16일</option>
+                <option value=17>17일</option>
+                <option value=18>18일</option>
+                <option value=19>19일</option>
+                <option value=20>20일</option>
+                <option value=21>21일</option>
+                <option value=22>22일</option>
+                <option value=23>23일</option>
+                <option value=24>24일</option>
+                <option value=25>25일</option>
+                <option value=26>26일</option>
+                <option value=27>27일</option>
+                <option value=28>28일</option>
+                <option value=29>29일</option>
+                <option value=30>30일</option>
+                <option value=31>31일</option>
+            </select>
+        </div>
         <div class="input-group mb-3">
             <label class="input-group-text" for="hour">출발 시간</label>
             <select class="form-select" id="hour">
@@ -256,12 +339,125 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">출발지</th>
-            <th scope="col">목적지</th>
-            <th scope="col">출발 시간</th>
-            <th scope="col">현재 인원</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col" colspan="2">출발지</th>
+            <th scope="col" colspan="2">목적지</th>
+            <th scope="col" colspan="2">날짜</th>
+            <th scope="col" colspan="2">출발 시간</th>
+            <th scope="col" colspan="2">현재 인원</th>
+            <th scope="col" colspan="2"></th>
+            <th scope="col" colspan="2"></th>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <select class="form-select middle-select" id="find_from">
+                <option value="">출발지 선택</option>
+                <option value="기흥역">기흥역</option>
+                <option value="명지대역">명지대역</option>
+                <option value="명지대학교">명지대학교</option>
+                </select>
+            </th>
+            <th colspan="2">
+                <select class="form-select middle-select" id="find_to">
+                <option value="">목적지 선택</option>
+                <option value="명지대학교">명지대학교</option>
+                <option value="기흥역">기흥역</option>
+                <option value="명지대역">명지대역</option>
+                </select>
+            </th>
+            <th colspan="1">
+                <select class="form-select small-select" id="find_month">
+                <option value="">-월-</option>
+                <option value=1월>1월</option>
+                <option value=2월>2월</option>
+                <option value=3월>3월</option>
+                <option value=4월>4월</option>
+                <option value=5월>5월</option>
+                <option value=6월>6월</option>
+                <option value=7월>7월</option>
+                <option value=8월>8월</option>
+                <option value=9월>9월</option>
+                <option value=10월>10월</option>
+                <option value=11월>11월</option>
+                <option value=12월>12월</option>
+                </select>
+            </th>
+            <th colspan="1">                
+                <select class="form-select small-select" id="find_day">
+                    <option value="">-일-</option>
+                    <option value=1일>1일</option>
+                    <option value=2일>2일</option>
+                    <option value=3일>3일</option>
+                    <option value=4일>4일</option>
+                    <option value=5일>5일</option>
+                    <option value=6일>6일</option>
+                    <option value=7일>7일</option>
+                    <option value=8일>8일</option>
+                    <option value=9일>9일</option>
+                    <option value=10일>10일</option>
+                    <option value=11일>11일</option>
+                    <option value=12일>12일</option>
+                    <option value=13일>13일</option>
+                    <option value=14일>14일</option>
+                    <option value=15일>15일</option>
+                    <option value=16일>16일</option>
+                    <option value=17일>17일</option>
+                    <option value=18일>18일</option>
+                    <option value=19일>19일</option>
+                    <option value=20일>20일</option>
+                    <option value=21일>21일</option>
+                    <option value=22일>22일</option>
+                    <option value=23일>23일</option>
+                    <option value=24일>24일</option>
+                    <option value=25일>25일</option>
+                    <option value=26일>26일</option>
+                    <option value=27일>27일</option>
+                    <option value=28일>28일</option>
+                    <option value=29일>29일</option>
+                    <option value=30일>30일</option>
+                    <option value=31일>31일</option>
+                    </select>
+            </th>
+            <th colspan="1">
+                <select class="form-select small-select" id="find_hour">
+                <option value="">-시-</option>
+                <option value="오전 7시">오전 7시</option>
+                <option value="오전 8시">오전 8시</option>
+                <option value="오전 9시">오전 9시</option>
+                <option value="오전 10시">오전 10시</option>
+                <option value="오전 11시">오전 11시</option>
+                <option value="오후 12시">오후 12시</option>
+                <option value="오후 1시">오후 1시</option>
+                <option value="오후 2시">오후 2시</option>
+                <option value="오후 3시">오후 3시</option>
+                <option value="오후 4시">오후 4시</option>
+                <option value="오후 5시">오후 5시</option>
+                <option value="오후 6시">오후 6시</option>
+                <option value="오후 7시">오후 7시</option>
+                <option value="오후 8시">오후 8시</option>
+                <option value="오후 9시">오후 9시</option>
+                <option value="오후 10시">오후 10시</option>
+                </select>
+            </th>
+            <th colspan="1">
+                <select class="form-select small-select" id="find_minute">
+                <option value="">-분-</option>
+                <option value=00분>00분</option>
+                <option value=05분>05분</option>
+                <option value=10분>10분</option>
+                <option value=15분>15분</option>
+                <option value=20분>20분</option>
+                <option value=25분>25분</option>
+                <option value=30분>30분</option>
+                <option value=35분>35분</option>
+                <option value=40분>40분</option>
+                <option value=45분>45분</option>
+                <option value=50분>50분</option>
+                <option value=55분>55분</option>
+                </select>
+            </th>
+            <th colspan="2"></th>
+            <th colspan="2"></th>
+            <th colspan="2"></th>
         </tr>
         </thead>
         <tbody id="article-list">

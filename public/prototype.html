@@ -32,7 +32,7 @@
         }
 
         .order {
-            width: 500px;
+            width: 800px;
             margin: 60px auto 0px auto;
             padding-bottom: 60px;
         }
@@ -52,7 +52,7 @@
     </style>
     <script>
         $(document).ready(function () {
-            //get_list();
+            get_list();
         });
 
         function get_list() {
@@ -64,6 +64,38 @@
                     const articles = response
 
                     console.log(articles)
+
+                    for (let i = 0; i < articles.length; i++) {
+                        let article = articles[i]
+
+                        console.log(article)
+
+                        const id = article["_id"]
+                        const time = article['time']
+                        const from = article["arrival"]
+                        const to = article["departure"]
+                        const people = article["maxCount"]
+                        const count = article["count"]
+                        const url = article["link"]
+                        const password = article["password"]
+
+                        console.log(time, from, to, people, count)
+
+                        let temp_html = ``
+
+                        temp_html = `<tr><td>${from}</td>
+                                     <td>${to}</td>
+                                     <td>${time}</td>
+                                     <td>${count}/${people}</td>
+                                     <td>
+                                        <button onClick="show_link('${id}', '${count}', '${people}')" type="button" class="btn btn-warning mybtn">신청</button>
+                                     </td>
+                                     <td>
+                                        <button onClick="delete_order('${id}')" type="button" class="btn btn-warning mybtn">삭제</button>
+                                     </td></tr>`
+
+                        $('#article-list').append(temp_html)
+                    }
                 }
             });
         }
@@ -75,15 +107,53 @@
             const from = $('#from').val()
             const to = $('#to').val()
             const people = $('#people').val()
-            const url = $('#url').val()
+            const talk = $('#url').val()
             const password = $('#password').val()
+            const studentNum = $('#studentNum').val()
 
             $.ajax({
                 type: "POST",
                 url: "/article",
                 data: {
                     "hour": hour, "minute": minute, "from": from, "to": to,
-                    "people": people, "url": url, "password": password
+                    "people": people, "talk": talk, "password": password, "studentNum": studentNum
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
+        function show_link(id, count, people) {
+            if(count - people == 0){
+                alert("인원이 이미 다 찼습니다.")
+            } else if (window.confirm('정말로 신청하시겠습니까?')) {
+                const studentNum = prompt('학번을 입력해주세요')
+                $.ajax({
+                    type: "POST",
+                    url: '/link',
+                    data: {'id': id, 'studentNum': studentNum},
+                    dataType: "JSON",
+                    success: function (response) {
+                        const article = response
+                        const link = article[0]['link']
+
+                        window.location.reload()
+                        window.open(link)
+                    }
+                });
+            }
+        }
+
+        function delete_order(id) {
+            const password = prompt('비밀번호 입력')
+            $.ajax({
+                type: "DELETE",
+                url: "/delete_article",
+                data: {
+                    "id": id, "password": password
                 },
                 dataType: "JSON",
                 success: function (response) {
@@ -147,17 +217,14 @@
             <label class="input-group-text" for="from">출발지</label>
             <select class="form-select" id="from">
                 <option selected>-- 출발지를 선택해주세요 ---</option>
-                <option value="기흥역 5번 출구">기흥역 5번 출구</option>
+                <option value="기흥역">기흥역</option>
                 <option value="명지대역">명지대역</option>
-                <option value="명지대 로터리">명지대 로터리</option>
+                <option value="명지대학교">명지대학교</option>
             </select>
-        </div>
-        <div class="input-group mb-3">
             <label class="input-group-text" for="to">목적지</label>
             <select class="form-select" id="to">
                 <option selected>-- 목적지를 선태해주세요 ---</option>
-                <option value="명지대 학생회관 앞">명지대 학생회관 앞</option>
-                <option value="명지대 3공학관">명지대 3공학관</option>
+                <option value="명지대학교">명지대학교</option>
                 <option value="기흥역">기흥역</option>
                 <option value="명지대역">명지대역</option>
             </select>
@@ -180,8 +247,11 @@
             <span class="input-group-text">비밀번호</span>
             <input id="password" type="text" class="form-control" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
+            <span class="input-group-text">학번</span>
+            <input id="studentNum" type="text" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
         </div>
-        <button onclick="save_article()" type="button" class="btn btn-warning mybtn">합승 구하기</button>
+        <button onclick="save_article()" type="button" class="btn btn-warning mybtn">게시글 작성하기</button>
     </div>
     <table class="table">
         <thead>
@@ -191,54 +261,10 @@
             <th scope="col">출발 시간</th>
             <th scope="col">현재 인원</th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody id="article-list">
-        <tr>
-            <td>기흥역 5출</td>
-            <td>명지대 3공</td>
-            <td>0810</td>
-            <td>1/4</td>
-            <td>
-                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승하기</button>
-            </td>
-        </tr>
-        <tr>
-            <td>명지대역</td>
-            <td>명지대 학관</td>
-            <td>0820</td>
-            <td>1/4</td>
-            <td>
-                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승하기</button>
-            </td>
-        </tr>
-        <tr>
-            <td>기흥역 5출</td>
-            <td>명지대 학관</td>
-            <td>0820</td>
-            <td>3/4</td>
-            <td>
-                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승하기</button>
-            </td>
-        </tr>
-        <tr>
-            <td>기흥역 5출</td>
-            <td>명지대 학관</td>
-            <td>0830</td>
-            <td>4/4</td>
-            <td>
-                <button onclick="save_order()" type="button" class="btn btn-warning mybtn">합승마감</button>
-            </td>
-        </tr>
-        <tr>
-            <td>기흥역 5출</td>
-            <td>명지대 3공</td>
-            <td>0850</td>
-            <td>1/4</td>
-            <td>
-                <button onclick="send_agree()" type="button" class="btn btn-warning mybtn">합승하기</button>
-            </td>
-        </tr>
         </tbody>
     </table>
 </div>

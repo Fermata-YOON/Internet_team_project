@@ -77,6 +77,7 @@
             const from = $('#from').val()
             const to = $('#to').val()
             const people = $('#people').val()
+            const student_id = $('#student_id').val()
             const url = $('#url').val()
             const password = $('#password').val()
 
@@ -85,7 +86,7 @@
                 url: "/article",
                 data: {
                     "hour": hour, "minute": minute, "from": from, "to": to,
-                    "people": people, "url": url, "password": password
+                    "people": people, "student_id":student_id, "url": url, "password": password
                 },
                 dataType: "JSON",
                 success: function (response) {
@@ -97,51 +98,64 @@
             
         }
 
+        function save_order() {
+            if (!isValidStudentId(student_id)) {
+                alert("학번을 제대로 입력해 주세요");
+                return;
+            }
+        }
+
         //<
         function checkData() {
-                const hour = $('#hour').val();
-                const minute = $('#minute').val();
-                const from = $('#from').val();
-                const to = $('#to').val();
-                const people = $('#people').val();
-                const url = $('#url').val();
-                const password = $('#password').val();
-                
-                // 데이터 형식을 검사하고 오류가 있는 경우 알림창을 띄웁니다.
-                if (!isValidHour(hour)) {
-                    alert('잘못된 시간 형식입니다.');
-                    return;
-                }
-                
-                if (!isValidMinute(minute)) {
-                    alert('잘못된 분 형식입니다.');
-                    return;
-                }
-                
-                if (!isValidFromTo(from, to)) {
-                    alert('출발지와 도착지를 올바르게 입력해주세요.');
-                    return;
-                }
-                
-                if (!isValidPeople(people)) {
-                    alert('잘못된 인원 수입니다.');
-                    return;
-                }
-
-                
-                // 오픈채팅 링크는 아직 비교할 데이터가 없어서 잘못된 알림 코드를 주석처리했습니다.
-                // if (!isValidUrl(url)) {
-                //     alert('잘못된 URL 형식입니다.');
-                //     return;
-                // }
-
-
-                //비밀번호는 아직 비교할 데이터가 없어서 잘못된 알림 코드를 주석처리했습니다.
-                // if (!isValiPassword(password)) {
-                //     alert('잘못된 비밀번호 입니다.');
-                //     return;
-                // }
+            const hour = $('#hour').val();
+            const minute = $('#minute').val();
+            const from = $('#from').val();
+            const to = $('#to').val();
+            const people = $('#people').val();
+            const student_id = $('#student_id').val();
+            const url = $('#url').val();
+            const password = $('#password').val();
             
+            // 데이터 형식을 검사하고 오류가 있는 경우 알림창을 띄웁니다.
+            if (!isValidHour(hour)) {
+                alert('잘못된 시간 형식입니다.');
+                return;
+            }
+            
+            if (!isValidMinute(minute)) {
+                alert('잘못된 분 형식입니다.');
+                return;
+            }
+            
+            if (!isValidFromTo(from, to)) {
+                alert('출발지와 도착지를 올바르게 입력해주세요.');
+                return;
+            }
+            
+            if (!isValidPeople(people)) {
+                alert('잘못된 인원 수입니다.');
+                return;
+            }
+
+            if (!isValidStudentId(student_id)) {
+                alert('학번을 제대로 입력해 주세요.');
+                return;
+            }
+
+            
+            // 오픈채팅 링크는 아직 비교할 데이터가 없어서 잘못된 알림 코드를 주석처리했습니다.
+            // if (!isValidUrl(url)) {
+            //     alert('잘못된 URL 형식입니다.');
+            //     return;
+            // }
+
+
+            //비밀번호는 아직 비교할 데이터가 없어서 잘못된 알림 코드를 주석처리했습니다.
+            // if (!isValiPassword(password)) {
+            //     alert('잘못된 비밀번호 입니다.');
+            //     return;
+            // }
+        
             
         }
 
@@ -186,6 +200,15 @@
         //password 형식을 검사하는 함수
         function isValiPassword(password) {
             return ;
+        }
+
+        function isValidStudentId(student_id) {
+            var regex = /^\d+$/;
+            if (regex.test(student_id.value)) {
+                return true;
+            } else {
+                return false;
+            }
         }
         //>
 
@@ -267,6 +290,11 @@
                 <option value=3>3명</option>
                 <option value=4>4명</option>
             </select>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">본인 학번</span>
+            <input id="student_id" type="text" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default" placeholder="필수 입력 사항">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">오픈채팅 링크</span>

@@ -265,7 +265,7 @@
             });
         }
 
-        //<
+        //<kdh
         function checkData() {
             const ride_month = $('#month').val()
             const ride_day = $('#day').val()
@@ -373,15 +373,16 @@
 
         //password 형식을 검사하는 함수
         function isValiPassword(password) {
-            return password.includes('1234');            
+            return password.length>3 && password.length<5;            
         }
 
         //studentNum 형식을 검사하는 함수
         function isValiStudentNum(studentNum) {
-            return studentNum.includes('60151234');
+            return studentNum.length>7 && studentNum.length<9;
         }
 
-        //>
+
+        //> kdh
     </script>
 </head>
 <body>

@@ -305,6 +305,7 @@
             else if (isValiRide_month(ride_month)) {
 
                 if(ride_month < parseInt(formatDate(today,'mm'), 10)) {
+
                     alert('지난 날짜(월) 입니다.');
                     return 0;
                 }
@@ -312,16 +313,23 @@
             }
             //>--
 
+            //<--
             if(!isValiRide_day(ride_day)) {
                 alert('잘못된 일 형식입니다.');
                 return 0;
             }
             else if (isValiRide_month(ride_day)) {
+
                 if(ride_day < parseInt(formatDate(today,'dd'), 10)) {
-                    alert('지난 날짜(일) 입니다.');
-                    return 0;
+
+                    if (ride_month <= parseInt(formatDate(today,'mm'), 10)) {
+                        alert('지난 날짜(일) 입니다.');
+                        return 0;
+                    }
+
                 }
             }
+            //>--
 
             if (!isValiRide_Hour(ride_hour)) {
                 alert('잘못된 시간 형식입니다.');

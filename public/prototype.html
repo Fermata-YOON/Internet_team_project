@@ -278,16 +278,49 @@
             const password = $('#password').val()
             const studentNum = $('#studentNum').val()
                 
-                // 데이터 형식을 검사하고 오류가 있는 경우 알림창을 띄웁니다.
+            // 데이터 형식을 검사하고 오류가 있는 경우 알림창을 띄웁니다.
 
-            if (!isValiRide_month(ride_month)) {
-                alert('잘못된 월 형식입니다.');
-                return 0;
+            //< 날짜 년, 월, 일 가져오는 함수
+            const today = new Date();
+            function formatDate(date, format) {
+                const map = {
+                    mm: date.getMonth() + 1,
+                    dd: date.getDate(),
+                    yy: date.getFullYear().toString().slice(-2),
+                    yyyy: date.getFullYear()
+                }
+
+                return format.replace(/mm|dd|yy|yyy/gi, matched => map[matched])
             }
+            //>
+
+            //<--
+            if (!isValiRide_month(ride_month)) {
+
+                alert('잘못된 월 형식입니다.');
+
+                return 0;
+
+            } 
+            else if (isValiRide_month(ride_month)) {
+
+                if(ride_month < parseInt(formatDate(today,'mm'), 10)) {
+                    alert('지난 날짜(월) 입니다.');
+                    return 0;
+                }
+
+            }
+            //>--
 
             if(!isValiRide_day(ride_day)) {
                 alert('잘못된 일 형식입니다.');
                 return 0;
+            }
+            else if (isValiRide_month(ride_day)) {
+                if(ride_day < parseInt(formatDate(today,'dd'), 10)) {
+                    alert('지난 날짜(일) 입니다.');
+                    return 0;
+                }
             }
 
             if (!isValiRide_Hour(ride_hour)) {

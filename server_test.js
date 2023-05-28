@@ -139,7 +139,7 @@ app.post('/link', async (req, res) => {
     }
 })
 
-schedule.scheduleJob('0 0/1 * * * *', async () => {
+schedule.scheduleJob('0 0/5 * * *', async () => {
     const now = new Date();
     const now_year = now.toLocaleDateString('en-US', {
         year: 'numeric',});
@@ -157,8 +157,7 @@ schedule.scheduleJob('0 0/1 * * * *', async () => {
     console.log(now_hour);
     console.log(now_minute);
     for(let i=0; i<article.length; i++){
-        console.log(i)
-        console.log(article[i]['create'])
+        const id = article[i]['id']
         if(
             Number(article[i]['create'].substring(0, 4)) < Number(now_year) |
             Number(article[i]['ride_month'].substring(0, article[i]['ride_month'].length - 1)) < Number(now_month) |
@@ -167,12 +166,11 @@ schedule.scheduleJob('0 0/1 * * * *', async () => {
             Number(article[i]['ride_minute'].substring(0, article[i]['ride_minute'].length -1)) < Number(now_minute)
 
         ){
-            console.log("삭제예정");
-            //i--;
-            //삭제함수가 완료되면 삭제로 article내 순번이 미뤄지는걸 적용하기위해 위의 i--를 활성화 해주세요.
+            Article.deleteOne({'_id': id})
+                .then(console.log("삭제완료"))
+                .catch((err)=> console.log("삭제오류"))
         }
     }
-	console.log('-------------------')
 })
 
 

@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const path = require('path');
+const schedule = require('node-schedule');
 
 main()
 
@@ -137,3 +138,16 @@ app.post('/link', async (req, res) => {
         res.json(article)
     }
 })
+
+schedule.scheduleJob('0 0/1 * * * *', async () => {
+    const now = new Date();
+    const article = await Article.find({})
+
+    console.log(now)
+    for(let i=0; i<article.length; i++){
+        console.log(article[i]['create'])
+    }
+	console.log('-------------------')
+})
+
+

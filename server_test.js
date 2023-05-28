@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const path = require('path');
+const schedule = require('node-schedule');
 
 main()
 
@@ -83,8 +84,6 @@ async function main() {
     app.listen(3000, () => {
         console.log('서버가 3000 포트에서 실행 중입니다.');
     });
-
-    return db
 }
 
 app.get('/', (req, res) => {
@@ -137,3 +136,18 @@ app.post('/link', async (req, res) => {
         res.json(article)
     }
 })
+
+schedule.scheduleJob('* 0/1 * * *', async function() {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth()
+    const day = now.getDate()
+    let now_date = new Date(year, month, day)
+    let articles = await Article.find({})
+	console.log(now_date);
+    console.log(now);
+    for(let i=0; i<articles.length; i++){
+        console.log(articles[i]['create'],)
+    }
+    console.log('----------------')
+});

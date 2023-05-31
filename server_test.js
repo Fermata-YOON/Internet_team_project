@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const http = require('http');
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -67,7 +66,7 @@ async function getList() {
 }
 
 async function main() {
-    const db = await mongoose.connect("mongodb+srv://ohyuntaek:60181907@cluster0.8a0ppgx.mongodb.net/", {
+    await mongoose.connect("mongodb+srv://ohyuntaek:60181907@cluster0.8a0ppgx.mongodb.net/", {
         dbName: 'test'
     })
         .then(() => console.log('connected'))
@@ -84,12 +83,10 @@ async function main() {
     app.listen(3000, () => {
         console.log('서버가 3000 포트에서 실행 중입니다.');
     });
-
-    return db
 }
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'prototype.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/article', (req, res) => {

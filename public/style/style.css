@@ -1,0 +1,37 @@
+* {
+    font-family: 'Gowun Batang', serif;
+    color: white;
+}
+
+body {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://mblogthumb-phinf.pstatic.net/MjAxOTAxMDFfMTM0/MDAxNTQ2MzUwMTM3NjMz.o5GTHbDCbx3lJOunlOKdR9jplrtCrCNLIuJ_hgLF-oYg.ej3D9UKFchSSliE2ic_YlmuCvjhsWC__x8jAj39RFAUg.JPEG.dattani/%EB%AA%85%EC%A7%80%EB%8C%80_%EC%9A%A9%EC%9D%B8_%EC%A0%9C2%EC%98%88%EC%B2%B4%EB%8A%A5%EA%B4%80_5339.jpg?type=w2');
+    background-position: center;
+    background-size: cover;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+.order {
+    width: 800px;
+    margin: 60px auto 0px auto;
+    padding-bottom: 60px;
+}
+
+.mybtn {
+    width: 100%;
+}
+
+.order > table {
+    margin: 40px 0;
+    font-size: 18px;
+}
+
+option {
+    color: black;
+}
+
+.order-info {
+    display: none; /* 기본적으로 숨김 처리 */
+}

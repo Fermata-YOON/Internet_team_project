@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <title>명지 택시 카풀</title>
+    <link rel="stylesheet" href="style/style.css" />
+    <script>
+        $(document).ready(function () {
+            $("#find_from, #find_to, #find_month, #find_day, #find_hour, #find_minute").change(get_list);
+            $(".menu>h3").click(function () {
+                var submenu = $(this).next("div");
+                if (submenu.is(":visible")) {
+                    submenu.slideUp();
+                } else {
+                    submenu.slideDown();
+                }
+            });
+            get_list();
+        });
+    </script>
+    <script src="script/script.js"></script>
+</head>
+<body>
+<div class="mask"></div>
+<div class="order">
+    <h1>명지대 택시 합승 구하기!</h1>
+    <h3>여럿이 타서 싸게 학교 가자</h3>
+    <p>
+        합승 후 정산은 확실하게 해주세요!<br/>
+        무임승자할 경우 법적 책임은 본인에게 있습니다.
+    </p>
+    <div class="menu">
+        <h3>게시글 작성하기 ></h3>
+        <div class="order-info">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="month">월</label>
+                <select class="form-select" id="month">
+                    <option selected>-- 월 선택 --</option>
+                    <option value=1>1월</option>
+                    <option value=2>2월</option>
+                    <option value=3>3월</option>
+                    <option value=4>4월</option>
+                    <option value=5>5월</option>
+                    <option value=6>6월</option>
+                    <option value=7>7월</option>
+                    <option value=8>8월</option>
+                    <option value=9>9월</option>
+                    <option value=10>10월</option>
+                    <option value=11>11월</option>
+                    <option value=12>12월</option>
+                </select>
+                <label class="input-group-text" for="day">일</label>
+                <select class="form-select" id="day">
+                    <option selected>-- 일 선택 --</option>
+                    <option value=1>1일</option>
+                    <option value=2>2일</option>
+                    <option value=3>3일</option>
+                    <option value=4>4일</option>
+                    <option value=5>5일</option>
+                    <option value=6>6일</option>
+                    <option value=7>7일</option>
+                    <option value=8>8일</option>
+                    <option value=9>9일</option>
+                    <option value=10>10일</option>
+                    <option value=11>11일</option>
+                    <option value=12>12일</option>
+                    <option value=13>13일</option>
+                    <option value=14>14일</option>
+                    <option value=15>15일</option>
+                    <option value=16>16일</option>
+                    <option value=17>17일</option>
+                    <option value=18>18일</option>
+                    <option value=19>19일</option>
+                    <option value=20>20일</option>
+                    <option value=21>21일</option>
+                    <option value=22>22일</option>
+                    <option value=23>23일</option>
+                    <option value=24>24일</option>
+                    <option value=25>25일</option>
+                    <option value=26>26일</option>
+                    <option value=27>27일</option>
+                    <option value=28>28일</option>
+                    <option value=29>29일</option>
+                    <option value=30>30일</option>
+                    <option value=31>31일</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="hour">출발 시간</label>
+                <select class="form-select" id="hour">
+                    <option selected>-- 시간 선택 --</option>
+                    <option value=7>오전 7시</option>
+                    <option value=8>오전 8시</option>
+                    <option value=9>오전 9시</option>
+                    <option value=10>오전 10시</option>
+                    <option value=11>오전 11시</option>
+                    <option value=12>오후 12시</option>
+                    <option value=13>오후 1시</option>
+                    <option value=14>오후 2시</option>
+                    <option value=15>오후 3시</option>
+                    <option value=16>오후 4시</option>
+                    <option value=17>오후 5시</option>
+                    <option value=18>오후 6시</option>
+                    <option value=19>오후 7시</option>
+                    <option value=20>오후 8시</option>
+                    <option value=21>오후 9시</option>
+                    <option value=22>오후 10시</option>
+                </select>
+                <label class="input-group-text" for="minute">분</label>
+                <select class="form-select" id="minute">
+                    <option selected>-- 분 선택 --</option>
+                    <option value=0>00분</option>
+                    <option value=5>05분</option>
+                    <option value=10>10분</option>
+                    <option value=15>15분</option>
+                    <option value=20>20분</option>
+                    <option value=25>25분</option>
+                    <option value=30>30분</option>
+                    <option value=35>35분</option>
+                    <option value=40>40분</option>
+                    <option value=45>45분</option>
+                    <option value=50>50분</option>
+                    <option value=55>55분</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="from">출발지</label>
+                <select class="form-select" id="from">
+                    <option selected>-- 출발지를 선택해주세요 --</option>
+                    <option value="기흥역">기흥역</option>
+                    <option value="명지대역">명지대역</option>
+                    <option value="명지대학교">명지대학교</option>
+                </select>
+                <label class="input-group-text" for="to">목적지</label>
+                <select class="form-select" id="to">
+                    <option selected>-- 목적지를 선택해주세요 --</option>
+                    <option value="명지대학교">명지대학교</option>
+                    <option value="기흥역">기흥역</option>
+                    <option value="명지대역">명지대역</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="people">탑승 인원</label>
+                <select class="form-select" id="people">
+                    <option selected>-- 본인 포함 최대 탑승 인원 --</option>
+                    <option value=2>2명</option>
+                    <option value=3>3명</option>
+                    <option value=4>4명</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">오픈채팅 링크</span>
+                <input id="url" type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">비밀번호</span>
+                <input id="password" type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default">
+                <span class="input-group-text">학번</span>
+                <input id="studentNum" type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default">
+            </div>
+            <button onclick="save_article()" type="button" class="btn btn-warning mybtn">게시글 작성하기</button>
+        </div>
+    </div>
+    <br>
+    <div class="menu">
+        <h3>검색 필터 설정 ></h3>
+        <div class="order-info">
+            <table class="table">
+                <tr>
+                    <th scope="col" colspan="1">출발지 선택</th>
+                    <th colspan="1">
+                        <select class="form-select" id="find_from">
+                            <option value="">출발지 선택</option>
+                            <option value="기흥역">기흥역</option>
+                            <option value="명지대역">명지대역</option>
+                            <option value="명지대학교">명지대학교</option>
+                        </select>
+                    </th>
+                    <th scope="col" colspan="1">목적지 선택</th>
+                    <th colspan="1">
+                        <select class="form-select" id="find_to">
+                            <option value="">목적지 선택</option>
+                            <option value="명지대학교">명지대학교</option>
+                            <option value="기흥역">기흥역</option>
+                            <option value="명지대역">명지대역</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col" colspan="1">월</th>
+                    <th colspan="1">
+                        <select class="form-select" id="find_month">
+                            <option value="">월 선택</option>
+                            <option value=1월>1월</option>
+                            <option value=2월>2월</option>
+                            <option value=3월>3월</option>
+                            <option value=4월>4월</option>
+                            <option value=5월>5월</option>
+                            <option value=6월>6월</option>
+                            <option value=7월>7월</option>
+                            <option value=8월>8월</option>
+                            <option value=9월>9월</option>
+                            <option value=10월>10월</option>
+                            <option value=11월>11월</option>
+                            <option value=12월>12월</option>
+                        </select>
+                    </th>
+                    <th scope="col" colspan="1">일</th>
+                    <th colspan="1">
+                        <select class="form-select" id="find_day">
+                            <option value="">일 선택</option>
+                            <option value=1일>1일</option>
+                            <option value=2일>2일</option>
+                            <option value=3일>3일</option>
+                            <option value=4일>4일</option>
+                            <option value=5일>5일</option>
+                            <option value=6일>6일</option>
+                            <option value=7일>7일</option>
+                            <option value=8일>8일</option>
+                            <option value=9일>9일</option>
+                            <option value=10일>10일</option>
+                            <option value=11일>11일</option>
+                            <option value=12일>12일</option>
+                            <option value=13일>13일</option>
+                            <option value=14일>14일</option>
+                            <option value=15일>15일</option>
+                            <option value=16일>16일</option>
+                            <option value=17일>17일</option>
+                            <option value=18일>18일</option>
+                            <option value=19일>19일</option>
+                            <option value=20일>20일</option>
+                            <option value=21일>21일</option>
+                            <option value=22일>22일</option>
+                            <option value=23일>23일</option>
+                            <option value=24일>24일</option>
+                            <option value=25일>25일</option>
+                            <option value=26일>26일</option>
+                            <option value=27일>27일</option>
+                            <option value=28일>28일</option>
+                            <option value=29일>29일</option>
+                            <option value=30일>30일</option>
+                            <option value=31일>31일</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col" colspan="1">시</th>
+                    <th colspan="1">
+                        <select class="form-select" id="find_hour">
+                            <option value="">시 선택</option>
+                            <option value=7시>오전 7시</option>
+                            <option value=8시>오전 8시</option>
+                            <option value=9시>오전 9시</option>
+                            <option value=10시>오전 10시</option>
+                            <option value=11시>오전 11시</option>
+                            <option value=12시>오후 12시</option>
+                            <option value=13시>오후 1시</option>
+                            <option value=14시>오후 2시</option>
+                            <option value=15시>오후 3시</option>
+                            <option value=16시>오후 4시</option>
+                            <option value=17시>오후 5시</option>
+                            <option value=18시>오후 6시</option>
+                            <option value=19시>오후 7시</option>
+                            <option value=20시>오후 8시</option>
+                            <option value=21시>오후 9시</option>
+                            <option value=22시>오후 10시</option>
+                        </select>
+                    </th>
+                    <th scope="col" colspan="1">분</th>
+                    <th colspan="1">
+                        <select class="form-select" id="find_minute">
+                            <option value="">분 선택</option>
+                            <option value=00분>00분</option>
+                            <option value=05분>05분</option>
+                            <option value=10분>10분</option>
+                            <option value=15분>15분</option>
+                            <option value=20분>20분</option>
+                            <option value=25분>25분</option>
+                            <option value=30분>30분</option>
+                            <option value=35분>35분</option>
+                            <option value=40분>40분</option>
+                            <option value=45분>45분</option>
+                            <option value=50분>50분</option>
+                            <option value=55분>55분</option>
+                        </select>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </li>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" colspan="1">출발지</th>
+            <th scope="col" colspan="1">목적지</th>
+            <th scope="col" colspan="2">날짜</th>
+            <th scope="col" colspan="2">출발 시간</th>
+            <th scope="col" colspan="1">현재 인원</th>
+            <th scope="col" colspan="1"></th>
+            <th scope="col" colspan="1"></th>
+        </tr>
+        </thead>
+        <tbody id="article-list">
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

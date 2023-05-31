@@ -147,10 +147,10 @@ schedule.scheduleJob('0 0/5 * * *', async () => {
     for(let i=0; i<article.length; i++){
         const id = article[i]['id']
         if(
-            Number(article[i]['create'].substring(0, 4)) < Number(now_year) |
-            Number(article[i]['ride_month'].substring(0, article[i]['ride_month'].length - 1)) < Number(now_month) |
-            Number(article[i]['ride_day'].substring(0, article[i]['ride_day'].length -1)) < Number(now_day) |
-            Number(article[i]['ride_hour'].substring(0, article[i]['ride_hour'].length -1)) < Number(now_hour) |
+            Number(article[i]['create'].substring(0, 4)) < Number(now_year) &&
+            Number(article[i]['ride_month'].substring(0, article[i]['ride_month'].length - 1)) < Number(now_month) &&
+            Number(article[i]['ride_day'].substring(0, article[i]['ride_day'].length -1)) < Number(now_day) &&
+            Number(article[i]['ride_hour'].substring(0, article[i]['ride_hour'].length -1)) < Number(now_hour) &&
             Number(article[i]['ride_minute'].substring(0, article[i]['ride_minute'].length -1)) < Number(now_minute)
 
         ){

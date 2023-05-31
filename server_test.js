@@ -66,18 +66,11 @@ async function getList() {
 }
 
 async function main() {
-    await mongoose.connect("mongodb+srv://ohyuntaek:60181907@cluster0.8a0ppgx.mongodb.net/", {
-        dbName: 'test'
+    await mongoose.connect("mongodb+srv://masterAdmin:master1234@cluster0.8a0ppgx.mongodb.net/", {
+        dbName: 'Taxi'
     })
         .then(() => console.log('connected'))
         .catch((err) => console.log('connect fail'))
-
-    /*await test_article.save()
-        .then(() => console.log("성공"))
-        .catch((err) => console.log("실패"))
-
-    const articles = await Article.find()
-    console.log(articles)*/
 
 // 서버 시작
     app.listen(3000, () => {
@@ -92,8 +85,8 @@ app.get('/', (req, res) => {
 app.post('/article', (req, res) => {
     const newArticle = postArticle(req.body)
     newArticle.save()
-        .then(res.json({"msg": "success"}))
-        .catch((err)=>{res.json({"msg": "error"})})
+        .then(res.json({"msg": "게시글 작성 완료"}))
+        .catch((err)=>{res.json({"msg": "에러가 발생했습니다"})})
 });
 
 app.delete('/delete_article', async (req, res) => {
@@ -130,8 +123,6 @@ app.post('/link', async (req, res) => {
     } else {
         console.log('push student')
         await Article.updateOne({'_id': id},{$push: {'studentNum': studentNum}, $inc:{'count': 1}})
-            //.then(console.log('update success'))
-            //.catch((err)=>{console.log('update fail')})
         res.json(article)
     }
 })
@@ -165,7 +156,7 @@ schedule.scheduleJob('0 0/5 * * *', async () => {
         ){
             Article.deleteOne({'_id': id})
                 .then(console.log("삭제완료"))
-                .catch((err)=> console.log("삭제오류"))
+                .catch((err)=> console.log("오류가 발생했습니다"))
         }
     }
 })
